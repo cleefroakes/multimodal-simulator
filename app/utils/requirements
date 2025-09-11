@@ -1,0 +1,1 @@
+echo matplotlib sympy numpy fastapi uvicorn python-multipart pillow > requirements.txt

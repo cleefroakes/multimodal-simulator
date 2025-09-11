@@ -1,4 +1,5 @@
 from app.models.spec import ProblemSpec, Variable
+<<<<<<< HEAD
 import os
 from dotenv import load_dotenv
 from huggingface_hub import InferenceClient
@@ -30,3 +31,33 @@ def parse_image_and_text(image_path: str, text: str) -> ProblemSpec:
     except Exception as e:
         print(f"VLM error: {str(e)}")
         return parse_text(text)
+=======
+import matplotlib.pyplot as plt
+from PIL import Image
+import os
+
+def parse_image_and_text(image_path: str, text: str) -> ProblemSpec:
+    variables = [Variable(name="x")] if "x" in text else []
+    domain = "mechanics" if "beam" in text.lower() else "math"
+    equations = [text] if "=" in text else []
+    plot_path = None
+    if "beam" in text.lower():
+        img = Image.open(image_path)
+        plt.figure(figsize=(8, 6))
+        plt.imshow(img)
+        plt.title(f"Beam Image: {os.path.basename(image_path)}", fontsize=14)
+        plt.axis("off")
+        os.makedirs("artifacts", exist_ok=True)
+        plt.savefig("artifacts/beam_image.png", dpi=300, bbox_inches="tight")
+        plt.close()
+        plot_path = "artifacts/beam_image.png"
+    return ProblemSpec(
+        input_text=text,
+        domain=domain,
+        equations=equations,
+        entities={},
+        math_expressions=[],
+        image_data={"path": image_path, "plot": plot_path},
+        variables=variables
+    )
+>>>>>>> 2232274 (Initial commit of multimodal AI simulator)

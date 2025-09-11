@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Form, File, UploadFile
+<<<<<<< HEAD
 from typing import Optional
 import os
 import shutil
@@ -48,3 +49,30 @@ async def simulate(text: str = Form(...), image: Optional[UploadFile] = File(Non
 async def parse_input(text: str = Form(...)):
     spec = parse_text(text)
     return {"spec": spec.dict()}
+=======
+from app.utils.parser import parse_text
+from app.utils.vlm import parse_image_and_text
+from app.solvers.math_solver import solve_math
+from app.solvers.mechanics_solver import solve_beam
+
+app = FastAPI()
+
+@app.post("/parse")
+async def parse(text: str = Form(...)):
+    spec = parse_text(text)
+    return {"spec": spec}
+
+@app.post("/simulate")
+async def simulate(text: str = Form(...)):
+    spec = parse_text(text)
+    if spec.domain == "math":
+        return solve_math(spec)
+    elif spec.domain == "mechanics":
+        return solve_beam(spec)
+    return {"error": "Unknown domain"}
+
+@app.post("/simulate_with_image")
+async def simulate_with_image(text: str = Form(...), image: UploadFile = File(...)):
+    spec = parse_image_and_text(image.filename, text) # type: ignore
+    return solve_beam(spec)
+>>>>>>> 2232274 (Initial commit of multimodal AI simulator)
