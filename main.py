@@ -73,6 +73,11 @@ async def simulate(text: str = Form(...)):
 
 @app.post("/simulate_with_image")
 async def simulate_with_image(text: str = Form(...), image: UploadFile = File(...)):
+<<<<<<< HEAD
     spec = parse_image_and_text(image.filename, text) # type: ignore
     return solve_beam(spec)
 >>>>>>> 2232274 (Initial commit of multimodal AI simulator)
+=======
+    spec = parse_image_and_text(image. filename, text) # type: ignore
+    return solve_beam(spec)
+>>>>>>> 434bbdf (Add type ignore to math_solver.py and update main.py for simulator functionality)

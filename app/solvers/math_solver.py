@@ -57,7 +57,7 @@ def solve_math(spec: ProblemSpec):
         plot_path = None
         if 'x**2' in eq_str:
             xs = np.linspace(-3, 3, 100)
-            expr = left_expr - right_expr if '=' in eq_str else sympify(eq_str)
+            expr = left_expr - right_expr if '=' in eq_str else sympify(eq_str) # type: ignore
             ys = [float(expr.subs(x, val)) for val in xs]
             plt.figure(figsize=(8, 6))
             plt.plot(xs, ys, label=f"f(x) = {eq_str}", color="#1e90ff", linewidth=2)
