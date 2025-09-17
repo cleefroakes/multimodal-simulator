@@ -1,42 +1,36 @@
 from app.models.spec import ProblemSpec, Variable
-<<<<<<< HEAD
 import os
 from dotenv import load_dotenv
 from huggingface_hub import InferenceClient
+import matplotlib.pyplot as plt
+from PIL import Image
 
 load_dotenv()
 HF_TOKEN = os.getenv("HF_TOKEN")
 
 def parse_image_and_text(image_path: str, text: str) -> ProblemSpec:
-    if not HF_TOKEN:
-        print("Warning: HF_TOKEN not set, using fallback parsing")
-        return parse_text(text)
-    try:
-        client = InferenceClient(token=HF_TOKEN)
-        response = client.image_to_text(image_path=image_path, prompt=text, model="llava-hf/llava-13b")
-        if "beam" in response.lower():
-            return ProblemSpec(
-                domain="mechanics",
-                objective="Beam deflection",
-                variables=[Variable(name="L", value=2.0, units="m"), Variable(name="F", value=1000, units="N")],
-                equations=["-EI u'''' = f"]
-            )
-        else:
-            return ProblemSpec(
-                domain="math",
-                objective="Solve equation",
-                variables=[Variable(name="x", value=1.0, units="")],
-                equations=[response]
-            )
-    except Exception as e:
-        print(f"VLM error: {str(e)}")
-        return parse_text(text)
-=======
-import matplotlib.pyplot as plt
-from PIL import Image
-import os
-
-def parse_image_and_text(image_path: str, text: str) -> ProblemSpec:
+    if HF_TOKEN:
+        try:
+            client = InferenceClient(token=HF_TOKEN)
+            response = client.image_to_text(image_path=image_path, prompt=text, model="llava-hf/llava-13b")
+            if "beam" in response.lower():
+                return ProblemSpec(
+                    domain="mechanics",
+                    objective="Beam deflection",
+                    variables=[Variable(name="L", value=2.0, units="m"), Variable(name="F", value=1000, units="N")],
+                    equations=["-EI u'''' = f"]
+                )
+            else:
+                return ProblemSpec(
+                    domain="math",
+                    objective="Solve equation",
+                    variables=[Variable(name="x", value=1.0, units="")],
+                    equations=[response]
+                )
+        except Exception as e:
+            print(f"VLM error: {str(e)}")
+    
+    # Fallback to basic image and text parsing
     variables = [Variable(name="x")] if "x" in text else []
     domain = "mechanics" if "beam" in text.lower() else "math"
     equations = [text] if "=" in text else []
@@ -51,6 +45,7 @@ def parse_image_and_text(image_path: str, text: str) -> ProblemSpec:
         plt.savefig("artifacts/beam_image.png", dpi=300, bbox_inches="tight")
         plt.close()
         plot_path = "artifacts/beam_image.png"
+    
     return ProblemSpec(
         input_text=text,
         domain=domain,
@@ -60,4 +55,3 @@ def parse_image_and_text(image_path: str, text: str) -> ProblemSpec:
         image_data={"path": image_path, "plot": plot_path},
         variables=variables
     )
->>>>>>> 2232274 (Initial commit of multimodal AI simulator)
