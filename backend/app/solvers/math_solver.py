@@ -42,7 +42,7 @@ def solve_math(spec: ProblemSpec):
         return {
             "solution": [float(sol) for sol in solution],
             "plot": plot_path,
-            "explanation": f"Solved {eq_str} to get roots {solution}"
+            "explanation": f"Solved {eq_str} to get roots {solution}."
         }
     except Exception as e:
         return {"error": str(e), "message": "Math solver failed"}
