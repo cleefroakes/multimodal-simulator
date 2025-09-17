@@ -1,0 +1,35 @@
+multimodal-simulator/
+├── backend/  # Ingress/API Gateway + Orchestrator + Multimodal Layer
+│   ├── main.py  # FastAPI entrypoint (your existing one)
+│   ├── app/  # Modules
+│   │   ├── models/  # Pydantic schemas
+│   │   │   └── spec.py  # Problem Spec JSON (your existing)
+│   │   ├── utils/  # Multimodal tools
+│   │   │   ├── parser.py  # Math Parser (your existing)
+│   │   │   └── vlm.py  # VLM + OCR + ASR (updated below)
+│   │   └── orchestrator.py  # Agentic Layer (your existing)
+│   ├── requirements.txt  # Backend deps (add: paddleocr paddlepaddle whisper transformers)
+│   └── config.yaml  # Config for API, e.g., ports, env vars
+├── worker/  # Domain Simulation Backends + Post-Processing
+│   ├── solvers/  # Domain-specific
+│   │   ├── math_solver.py  # SymPy/SciPy (your existing, updated below)
+│   │   └── mechanics_solver.py  # Analytical (your existing)
+│   ├── report.py  # Post-Processing (LLM report generator, code below)
+│   ├── requirements.txt  # Worker deps (add: scipy)
+│   └── run_worker.py  # Entry for Ray/Prefect workers (code below)
+├── ui/  # Client Applications (MVP Next.js web app)
+│   ├── next.config.js  # Next.js config
+│   ├── pages/  # Next.js pages
+│   │   └── index.js  # Home page with upload and simulation (code below)
+│   ├── package.json  # Deps (add: next tailwindcss shadcn-ui)
+│   └── README.md  # UI setup
+├── infra/  # Deployment Topology (K8s, Docker)
+│   ├── Dockerfile  # For backend/worker (your existing)
+│   ├── k8s/  # K8s manifests (for later Q1)
+│   │   └── deployment.yaml  # Basic K8s deployment (code below)
+│   └── helm/  # Helm charts (for Q1, placeholder)
+├── .gitignore  # Your existing
+├── README.md  # Your existing
+├── requirements.txt  # Project-wide deps (your existing)
+├── test_beam.png  # Your test image
+└── config.yaml  # Global config (e.g., API URL, paths)

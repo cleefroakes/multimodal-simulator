@@ -13,6 +13,7 @@ env.bak/
 venv.bak/
 .env
 .envrc
+.env.txt
 
 # Project-specific
 uploads/

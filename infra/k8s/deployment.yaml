@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simulator-backend
+spec:
+  replicas:1
+  selector:
+    mathLabels:
+      app: simulator-backend
+  template:
+    metadata:
+     labels:
+       app: simulator-backend
+    spec:
+      containers:
+       - name: backend
+         image: your-docker-image
+         ports:
+         - containerPort: 8000
