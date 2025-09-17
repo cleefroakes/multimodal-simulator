@@ -45,4 +45,4 @@ def solve_math(spec: ProblemSpec):
             "explanation": f"Solved {eq_str} to get roots {solution}"
         }
     except Exception as e:
-        return {"error": str(e), "message": "Math solver failed"}\
+        return {"error": str(e), "message": "Math solver failed"}
